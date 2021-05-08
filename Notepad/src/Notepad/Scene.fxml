@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.collections.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
@@ -10,9 +11,231 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.collections.FXCollections?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TextArea prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;" wrapText="true" BorderPane.alignment="CENTER">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" text="撤销">
+                     <graphic>
+                        <Label text="    " />
+                     </graphic></MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="剪切" />
+                  <MenuItem mnemonicParsing="false" text="复制" />
+                  <MenuItem mnemonicParsing="false" text="粘贴" />
+                  <MenuItem mnemonicParsing="false" text="删除" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="从右到左的阅读顺序" />
+                  <MenuItem mnemonicParsing="false" text="显示 Unicode 控制字符" />
+                  <Menu mnemonicParsing="false" text="插入 Unicode 控制字符">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="LRM">
+                           <graphic>
+                              <Label text="    " />
+                           </graphic></MenuItem>
+                        <MenuItem mnemonicParsing="false" text="RLM" />
+                        <MenuItem mnemonicParsing="false" text="ZWJ" />
+                        <MenuItem mnemonicParsing="false" text="ZWNJ" />
+                        <MenuItem mnemonicParsing="false" text="LRE" />
+                        <MenuItem mnemonicParsing="false" text="RLE" />
+                        <MenuItem mnemonicParsing="false" text="LRO" />
+                        <MenuItem mnemonicParsing="false" text="RLO" />
+                        <MenuItem mnemonicParsing="false" text="PDF" />
+                        <MenuItem mnemonicParsing="false" text="NADS" />
+                        <MenuItem mnemonicParsing="false" text="NODS" />
+                        <MenuItem mnemonicParsing="false" text="ASS" />
+                        <MenuItem mnemonicParsing="false" text="ISS" />
+                        <MenuItem mnemonicParsing="false" text="AAFS" />
+                        <MenuItem mnemonicParsing="false" text="IAFS" />
+                        <MenuItem mnemonicParsing="false" text="RS" />
+                        <MenuItem mnemonicParsing="false" text="US" />
+                    </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="关闭输入法" />
+                  <MenuItem mnemonicParsing="false" text="汉字重选" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="使用 Bing 搜索..." />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+         <font>
+            <Font size="14.0" />
+         </font></TextArea>
    </center>
+   <top>
+      <MenuBar style="-fx-background-color: #fff;" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="文件">
+            <items>
+              <MenuItem mnemonicParsing="false" text="新建">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                     <graphic>
+                        <Label text="    " />
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="新窗口" />
+                  <MenuItem mnemonicParsing="false" text="打开">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="保存">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="另存为" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="页面设置" />
+                  <MenuItem mnemonicParsing="false" text="打印">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="退出" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="编辑">
+            <items>
+              <MenuItem mnemonicParsing="false" text="撤销">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                     <graphic>
+                        <Label text="    " />
+                     </graphic>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="剪切">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="复制">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="粘贴">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="V" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="删除" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="使用 Bing 搜索...">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="查找">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="查找下一个" />
+                  <MenuItem mnemonicParsing="false" text="查找上一个" />
+                  <MenuItem mnemonicParsing="false" text="替换">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="转到">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="全选">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="时间/日期" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="格式">
+            <items>
+                  <CheckMenuItem mnemonicParsing="false" selected="true" text="自动换行">
+                     <graphic>
+                        <Label text="  " />
+                     </graphic></CheckMenuItem>
+              <MenuItem mnemonicParsing="false" text="字体" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="查看">
+               <items>
+                  <Menu mnemonicParsing="false" text="缩放">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="放大">
+                           <graphic>
+                              <Label text="    " />
+                           </graphic></MenuItem>
+                        <MenuItem mnemonicParsing="false" text="缩小" />
+                        <MenuItem mnemonicParsing="false" text="恢复默认" />
+                    </items>
+                     <graphic>
+                        <Label text="  " />
+                     </graphic>
+                  </Menu>
+                  <CheckMenuItem mnemonicParsing="false" selected="true" text="状态栏" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="帮助">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="查看帮助">
+                     <graphic>
+                        <Label text="    " />
+                     </graphic></MenuItem>
+                  <MenuItem mnemonicParsing="false" text="发送反馈" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="关于记事本" />
+               </items>
+               <accelerator>
+                  <KeyCodeCombination alt="ANY" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <HBox prefHeight="25.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
+         <children>
+            <Separator orientation="VERTICAL" prefHeight="200.0">
+               <HBox.margin>
+                  <Insets left="100.0" />
+               </HBox.margin>
+            </Separator>
+            <Label text="第1行，第1列">
+               <HBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label text="100%">
+               <HBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label text="Windows(CRLF)">
+               <HBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label text="UTF-8">
+               <HBox.margin>
+                  <Insets left="15.0" right="15.0" top="5.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
