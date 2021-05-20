@@ -6,15 +6,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {	
+public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("Scene.fxml"));
 			
 			primaryStage.setScene(new Scene(root));
-			primaryStage.setTitle("记事本");
+			primaryStage.setTitle("无标题 - 记事本");
 			primaryStage.show();
+			Controller.stage = primaryStage;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

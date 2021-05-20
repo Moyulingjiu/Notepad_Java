@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.collections.FXCollections?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notepad.Controller">
    <center>
-      <TextArea prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;" wrapText="true" BorderPane.alignment="CENTER">
+      <TextArea fx:id="text" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;" wrapText="true" BorderPane.alignment="CENTER">
          <contextMenu>
             <ContextMenu>
               <items>
@@ -70,7 +70,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="文件">
             <items>
-              <MenuItem mnemonicParsing="false" text="新建">
+              <MenuItem mnemonicParsing="false" onAction="#newFile" text="新建">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -79,31 +79,31 @@
                      </graphic>
                   </MenuItem>
                   <MenuItem mnemonicParsing="false" text="新窗口" />
-                  <MenuItem mnemonicParsing="false" text="打开">
+                  <MenuItem mnemonicParsing="false" onAction="#openFile" text="打开">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="保存">
+                  <MenuItem mnemonicParsing="false" onAction="#saveFile" text="保存">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="另存为" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveAsFile" text="另存为" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="页面设置" />
-                  <MenuItem mnemonicParsing="false" text="打印">
+                  <MenuItem mnemonicParsing="false" onAction="#pageSet" text="页面设置" />
+                  <MenuItem mnemonicParsing="false" onAction="#pagePrint" text="打印">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="P" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="退出" />
+                  <MenuItem mnemonicParsing="false" onAction="#exit" text="退出" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="编辑">
             <items>
-              <MenuItem mnemonicParsing="false" text="撤销">
+              <MenuItem mnemonicParsing="false" onAction="#revoke" text="撤销">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -112,24 +112,24 @@
                      </graphic>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="剪切">
+                  <MenuItem mnemonicParsing="false" onAction="#cut" text="剪切">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="复制">
+                  <MenuItem mnemonicParsing="false" onAction="#copy" text="复制">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="粘贴">
+                  <MenuItem mnemonicParsing="false" onAction="#paste" text="粘贴">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="V" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="删除" />
+                  <MenuItem mnemonicParsing="false" onAction="#delete" text="删除" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="使用 Bing 搜索...">
+                  <MenuItem fx:id="menu_search" mnemonicParsing="false" onAction="#bingSearch" text="使用 Bing 搜索...">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -152,12 +152,12 @@
                      </accelerator>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="全选">
+                  <MenuItem mnemonicParsing="false" onAction="#selectAll" text="全选">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="A" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="时间/日期" />
+                  <MenuItem mnemonicParsing="false" onAction="#insertDate" text="时间/日期" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="格式">
@@ -189,7 +189,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="帮助">
                <items>
-                  <MenuItem mnemonicParsing="false" text="查看帮助">
+                  <MenuItem mnemonicParsing="false" onAction="#viewHelp" text="查看帮助">
                      <graphic>
                         <Label text="    " />
                      </graphic></MenuItem>
@@ -212,7 +212,7 @@
                   <Insets left="100.0" />
                </HBox.margin>
             </Separator>
-            <Label text="第1行，第1列">
+            <Label fx:id="pos" text="第1行，第1列">
                <HBox.margin>
                   <Insets left="15.0" right="15.0" top="5.0" />
                </HBox.margin>
