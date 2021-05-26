@@ -1,10 +1,12 @@
 package Notepad;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 	@Override
@@ -16,6 +18,13 @@ public class Main extends Application {
 			primaryStage.setTitle("无标题 - 记事本");
 			primaryStage.show();
 			Controller.stage = primaryStage;
+			// 关闭监听
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	            @Override
+	            public void handle(WindowEvent event) {
+	                System.out.print("关闭事件");
+	            }
+	        });
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

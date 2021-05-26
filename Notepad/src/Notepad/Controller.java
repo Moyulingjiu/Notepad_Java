@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javax.swing.filechooser.FileSystemView;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,6 +37,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -46,23 +50,62 @@ public class Controller implements Initializable {
 	private TextArea text;
 
 	@FXML
+	private HBox state;
+	@FXML
 	private Label pos;
+	@FXML
+	private Label zoom;
+
+	// =================================
+	// 编辑
+	@FXML
+	private MenuItem menu_revoke;
+	@FXML
+	private MenuItem menu_cut;
+	@FXML
+	private MenuItem menu_copy;
+	@FXML
+	private MenuItem menu_paste;
+	@FXML
+	private MenuItem menu_delete;
+
+	@FXML
+	private MenuItem menu_goto;
 
 	@FXML
 	private MenuItem menu_search;
 
+	// =================================
+	// 格式
+	@FXML
+	private MenuItem menu_autoChangeLine;
+
+	// =================================
+	// 查看
+	@FXML
+	private MenuItem menu_stateBar;
+
+	// =================================
+	// 系统变量
 	private String last = "";
 	private String initText = "";
 	private String filename = "";
 	private String title = "无标题 - 记事本";
+	private int fontSize = 14;
+	private int nowFontSize = 14;
 
 	private void recordText() {
 		last = text.getText();
 	}
 
-	private boolean saveCheck() {
-		if (!initText.equals(text.getText())) {
+	private void setTitle() {
+		String[] filename_tmp = filename.split("\\\\");
+		title = filename_tmp[filename_tmp.length - 1] + " - 记事本";
+		stage.setTitle(title);
+	}
 
+	public boolean saveCheck() {
+		if (!initText.equals(text.getText())) {
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("记事本");
 			alert.setHeaderText("你想更改保存到 " + title.substring(1, title.length() - 5) + "吗？");
@@ -94,12 +137,16 @@ public class Controller implements Initializable {
 
 	private boolean _saveFile() {
 		if (filename.equals("")) {
+			FileSystemView fsv = FileSystemView.getFileSystemView();
+			File com = fsv.getHomeDirectory(); // 读取桌面路径
+
 			FileChooser fileChooser = new FileChooser();
 			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
 			fileChooser.setTitle("保存");
-			fileChooser.setInitialFileName("C:/*.txt");
+			fileChooser.setInitialDirectory(com); // 设置文件对话框的初始目录
+			fileChooser.setInitialFileName("*.txt");
 			fileChooser.getExtensionFilters().add(extFilter);
-			File file = fileChooser.showOpenDialog(stage);
+			File file = fileChooser.showSaveDialog(stage);
 			if (file == null)
 				return false;
 			filename = file.toString();
@@ -120,31 +167,35 @@ public class Controller implements Initializable {
 		try {
 			writer = new FileWriter(file);
 			writer.write(text.getText());
+			initText = text.getText();
 			writer.flush();
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		setTitle();
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		menu_search.setDisable(false);
-		
+	private void eventRegiste() {
 		// 输入监听
 		text.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 //		        System.out.println("observable = " + observable + ", oldValue = " + oldValue + ", newValue = " + newValue);
 				if (initText.equals(text.getText())) {
-					if (title.substring(0, 1).equals("*"))
+					if (title.substring(0, 1).equals("*")) {
 						title = title.substring(1);
+						menu_revoke.setDisable(true);
+					}
 					stage.setTitle(title);
 				} else {
-					if (!title.substring(0, 1).equals("*"))
+					if (!title.substring(0, 1).equals("*")) {
 						title = "*" + title;
+						menu_revoke.setDisable(false);
+					}
 					stage.setTitle(title);
 				}
+				// recordText();
 			}
 		});
 		// 选中监听
@@ -155,11 +206,28 @@ public class Controller implements Initializable {
 				String select = text.getSelectedText();
 				if (select.length() == 0) {
 					menu_search.setDisable(true);
+					menu_cut.setDisable(true);
+					menu_copy.setDisable(true);
+					menu_delete.setDisable(true);
 				} else {
 					menu_search.setDisable(false);
+					menu_cut.setDisable(false);
+					menu_copy.setDisable(false);
+					menu_delete.setDisable(false);
 				}
 			}
 		});
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		menu_search.setDisable(true);
+		menu_revoke.setDisable(true);
+		menu_cut.setDisable(true);
+		menu_copy.setDisable(true);
+		menu_delete.setDisable(true);
+		menu_goto.setDisable(true);
+		eventRegiste();
 	}
 
 	// ==============================================
@@ -206,11 +274,7 @@ public class Controller implements Initializable {
 				text.setText(tmp); // 设置文本
 				initText = tmp;
 				last = tmp;
-				String[] filename_tmp = filename.split("\\\\");
-				System.out.println(filename);
-				System.out.println(filename_tmp.length);
-				title = filename_tmp[filename_tmp.length - 1] + " - 记事本";
-				stage.setTitle(title);
+				setTitle();
 				try {
 					bf.close();
 				} catch (IOException e) {
@@ -227,10 +291,20 @@ public class Controller implements Initializable {
 	}
 
 	public void saveAsFile(ActionEvent event) {
-		String tmp = filename;
-		filename = "";
-		if (!_saveFile())
-			filename = tmp;
+		FileSystemView fsv = FileSystemView.getFileSystemView();
+		File com = fsv.getHomeDirectory(); // 读取桌面路径
+
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+		fileChooser.setTitle("另存为文件");
+		fileChooser.setInitialDirectory(com); // 设置文件对话框的初始目录
+		fileChooser.setInitialFileName("*.txt");
+		fileChooser.getExtensionFilters().add(extFilter);
+		File file = fileChooser.showSaveDialog(stage);
+		if (file != null) {
+			filename = file.toString();
+			_saveFile(filename);
+		}
 	}
 
 	public void pageSet(ActionEvent event) {
@@ -310,20 +384,20 @@ public class Controller implements Initializable {
 
 	public void bingSearch(ActionEvent event) {
 		String url = String.format("https://cn.bing.com/search?q=%s&form=NPCTXT", text.getSelectedText());
-        Desktop desktop = Desktop.getDesktop();
-        if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {
-            URI uri;
+		Desktop desktop = Desktop.getDesktop();
+		if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {
+			URI uri;
 			try {
 				uri = new URI(url);
 				desktop.browse(uri);
 			} catch (URISyntaxException e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
-			}catch (IOException e) {
+			} catch (IOException e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
 			}
-        }
+		}
 	}
 
 	public void selectAll(ActionEvent event) {
@@ -340,27 +414,68 @@ public class Controller implements Initializable {
 	// ==============================================
 	// 格式菜单栏
 
-	// ==============================================
-	// 查看菜单栏
+	public void autoChangeLine(ActionEvent event) {
+		text.setWrapText(!text.isWrapText());
+		menu_goto.setDisable(!menu_goto.isDisable());
+	}
+
+	public void setFont(ActionEvent event) {
+		// FontDialog font = new FontDialog();
+	}
 
 	// ==============================================
+	// 查看菜单栏
+	public void enlarge(ActionEvent event) {
+		Font tmp = text.getFont();
+		if (nowFontSize < 100) 
+			nowFontSize++;
+		
+		text.setFont(new Font(tmp.getStyle(), nowFontSize));
+		zoom.setText(String.format("%d%%", nowFontSize * 100 / fontSize));
+	}
+	public void narrow(ActionEvent event) {
+		Font tmp = text.getFont();
+		if (nowFontSize > 8)
+			nowFontSize--;
+		
+		text.setFont(new Font(tmp.getStyle(), nowFontSize));
+		zoom.setText(String.format("%d%%", nowFontSize * 100 / fontSize));
+	}
+	public void normal(ActionEvent event) {
+		Font tmp = text.getFont();
+		nowFontSize = fontSize;
+		text.setFont(new Font(tmp.getStyle(), fontSize));
+		zoom.setText("100%");
+	}
+
+	public void stateBar(ActionEvent event) {
+		state.setVisible(!state.isVisible());
+	}
+	// ==============================================
 	// 帮助菜单栏
-	
+
 	public void viewHelp(ActionEvent event) {
-		String url = String.format("https://cn.bing.com/search?q=%s&form=NPCTXT", "获取有关 windows 10 中的记事本的帮助");
-        Desktop desktop = Desktop.getDesktop();
-        if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {
-            URI uri;
+		String url = "https://cn.bing.com/search?q=%E8%8E%B7%E5%8F%96%E6%9C%89%E5%85%B3+windows+10+%E4%B8%AD%E7%9A%84%E8%AE%B0%E4%BA%8B%E6%9C%AC%E7%9A%84%E5%B8%AE%E5%8A%A9&filters=guid:%224466414-zh-hans-dia%22%20lang:%22zh-hans%22&form=T00032&ocid=HelpPane-BingIA";
+		Desktop desktop = Desktop.getDesktop();
+		if (Desktop.isDesktopSupported() && desktop.isSupported(Desktop.Action.BROWSE)) {
+			URI uri;
 			try {
 				uri = new URI(url);
 				desktop.browse(uri);
 			} catch (URISyntaxException e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
-			}catch (IOException e) {
+			} catch (IOException e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
 			}
-        }
+		}
 	}
+
+	// 字体对话框
+
+	
+	// ==============================================
+	// 字体设置
+	
 }

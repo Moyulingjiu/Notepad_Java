@@ -13,7 +13,7 @@
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notepad.Controller">
    <center>
-      <TextArea fx:id="text" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #fff;" wrapText="true" BorderPane.alignment="CENTER">
+      <TextArea fx:id="text" style="-fx-background-color: #fff;" wrapText="true" BorderPane.alignment="CENTER">
          <contextMenu>
             <ContextMenu>
               <items>
@@ -103,7 +103,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="编辑">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#revoke" text="撤销">
+              <MenuItem fx:id="menu_revoke" mnemonicParsing="false" onAction="#revoke" text="撤销">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -112,22 +112,22 @@
                      </graphic>
                   </MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#cut" text="剪切">
+                  <MenuItem fx:id="menu_cut" mnemonicParsing="false" onAction="#cut" text="剪切">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="X" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#copy" text="复制">
+                  <MenuItem fx:id="menu_copy" mnemonicParsing="false" onAction="#copy" text="复制">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="C" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#paste" text="粘贴">
+                  <MenuItem fx:id="menu_paste" mnemonicParsing="false" onAction="#paste" text="粘贴">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="V" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" onAction="#delete" text="删除" />
+                  <MenuItem fx:id="menu_delete" mnemonicParsing="false" onAction="#delete" text="删除" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="menu_search" mnemonicParsing="false" onAction="#bingSearch" text="使用 Bing 搜索...">
                      <accelerator>
@@ -146,7 +146,7 @@
                         <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="转到">
+                  <MenuItem fx:id="menu_goto" mnemonicParsing="false" text="转到">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -162,29 +162,29 @@
           </Menu>
           <Menu mnemonicParsing="false" text="格式">
             <items>
-                  <CheckMenuItem mnemonicParsing="false" selected="true" text="自动换行">
+                  <CheckMenuItem fx:id="menu_autoChangeLine" mnemonicParsing="false" onAction="#autoChangeLine" selected="true" text="自动换行">
                      <graphic>
                         <Label text="  " />
                      </graphic></CheckMenuItem>
-              <MenuItem mnemonicParsing="false" text="字体" />
+              <MenuItem mnemonicParsing="false" onAction="#setFont" text="字体" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="查看">
                <items>
                   <Menu mnemonicParsing="false" text="缩放">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="放大">
+                      <MenuItem mnemonicParsing="false" onAction="#enlarge" text="放大">
                            <graphic>
                               <Label text="    " />
                            </graphic></MenuItem>
-                        <MenuItem mnemonicParsing="false" text="缩小" />
-                        <MenuItem mnemonicParsing="false" text="恢复默认" />
+                        <MenuItem mnemonicParsing="false" onAction="#narrow" text="缩小" />
+                        <MenuItem mnemonicParsing="false" onAction="#normal" text="恢复默认" />
                     </items>
                      <graphic>
                         <Label text="  " />
                      </graphic>
                   </Menu>
-                  <CheckMenuItem mnemonicParsing="false" selected="true" text="状态栏" />
+                  <CheckMenuItem fx:id="menu_stateBar" mnemonicParsing="false" onAction="#stateBar" selected="true" text="状态栏" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="帮助">
@@ -205,7 +205,7 @@
       </MenuBar>
    </top>
    <bottom>
-      <HBox prefHeight="25.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
+      <HBox fx:id="state" prefHeight="25.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
          <children>
             <Separator orientation="VERTICAL" prefHeight="200.0">
                <HBox.margin>
@@ -218,7 +218,7 @@
                </HBox.margin>
             </Label>
             <Separator orientation="VERTICAL" prefHeight="200.0" />
-            <Label text="100%">
+            <Label fx:id="zoom" text="100%">
                <HBox.margin>
                   <Insets left="15.0" right="15.0" top="5.0" />
                </HBox.margin>
