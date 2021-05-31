@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="507.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notepad.FontController">
+   <center>
+      <SplitPane dividerPositions="0.6947890818858561" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+         <items>
+            <SplitPane dividerPositions="0.49910873440285203, 0.7807486631016043" prefHeight="275.0" prefWidth="561.0">
+              <items>
+                  <TabPane prefHeight="30.0" prefWidth="134.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="字体">
+                           <content>
+                              <BorderPane fx:id="borderPaneFont" prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <ListView fx:id="listViewFont" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                 </center>
+                                 <top>
+                                    <TextField fx:id="textFieldFont" editable="false" BorderPane.alignment="CENTER" />
+                                 </top>
+                              </BorderPane>
+                           </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="样式">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <ListView fx:id="listViewStyle" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                 </center>
+                                 <top>
+                                    <TextField fx:id="textFieldStyle" editable="false" BorderPane.alignment="CENTER" />
+                                 </top>
+                              </BorderPane>
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="大小">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <ListView fx:id="listViewSize" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                 </center>
+                                 <top>
+                                    <TextField fx:id="textFieldSize" onAction="#onTextFieldSizeChanged" onInputMethodTextChanged="#onTextFieldSizeChanged" BorderPane.alignment="CENTER" />
+                                 </top>
+                              </BorderPane>
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+              </items>
+            </SplitPane>
+            <TabPane prefHeight="169.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="预览">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <Label id="label预览1" fx:id="labelPre" text="字体预览 Aa Bb" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="25.0" />
+                                 </font>
+                              </Label>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </items>
+      </SplitPane>
+   </center>
+</BorderPane>

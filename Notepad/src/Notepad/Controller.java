@@ -29,18 +29,25 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class Controller implements Initializable {
 	public static Stage stage;
@@ -420,27 +427,34 @@ public class Controller implements Initializable {
 	}
 
 	public void setFont(ActionEvent event) {
-		// FontDialog font = new FontDialog();
+		FontDialog dialog = new FontDialog();
+		Optional<Font> result = dialog.showAndWait();
+		result.ifPresent(f -> {
+			System.out.println(f);
+			text.setFont(f);
+		});
 	}
 
 	// ==============================================
 	// 查看菜单栏
 	public void enlarge(ActionEvent event) {
 		Font tmp = text.getFont();
-		if (nowFontSize < 100) 
+		if (nowFontSize < 100)
 			nowFontSize++;
-		
+
 		text.setFont(new Font(tmp.getStyle(), nowFontSize));
 		zoom.setText(String.format("%d%%", nowFontSize * 100 / fontSize));
 	}
+
 	public void narrow(ActionEvent event) {
 		Font tmp = text.getFont();
 		if (nowFontSize > 8)
 			nowFontSize--;
-		
+
 		text.setFont(new Font(tmp.getStyle(), nowFontSize));
 		zoom.setText(String.format("%d%%", nowFontSize * 100 / fontSize));
 	}
+
 	public void normal(ActionEvent event) {
 		Font tmp = text.getFont();
 		nowFontSize = fontSize;
@@ -472,10 +486,9 @@ public class Controller implements Initializable {
 		}
 	}
 
-	// 字体对话框
+	public void viewAbout(ActionEvent event) {
+		AboutDialog dialog = new AboutDialog();
+		dialog.showAndWait();
+	}
 
-	
-	// ==============================================
-	// 字体设置
-	
 }

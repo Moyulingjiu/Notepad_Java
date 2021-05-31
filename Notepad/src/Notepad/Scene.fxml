@@ -195,7 +195,7 @@
                      </graphic></MenuItem>
                   <MenuItem mnemonicParsing="false" text="发送反馈" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="关于记事本" />
+                  <MenuItem mnemonicParsing="false" onAction="#viewAbout" text="关于记事本" />
                </items>
                <accelerator>
                   <KeyCodeCombination alt="ANY" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
