@@ -75,6 +75,16 @@ public class Controller implements Initializable {
 	private MenuItem menu_paste;
 	@FXML
 	private MenuItem menu_delete;
+	
+
+	@FXML
+	private MenuItem menu_search_text;
+	@FXML
+	private MenuItem menu_search_next;
+	@FXML
+	private MenuItem menu_search_last;
+	@FXML
+	private MenuItem menu_replace;
 
 	@FXML
 	private MenuItem menu_goto;
@@ -100,6 +110,8 @@ public class Controller implements Initializable {
 	private String title = "无标题 - 记事本";
 	private int fontSize = 14;
 	private int nowFontSize = 14;
+	public String findString = "";  // 查找的字符串
+	public String replaceString = ""; // 要替换的字符串
 
 	private void recordText() {
 		last = text.getText();
@@ -216,11 +228,19 @@ public class Controller implements Initializable {
 					menu_cut.setDisable(true);
 					menu_copy.setDisable(true);
 					menu_delete.setDisable(true);
+					menu_search_text.setDisable(true);
+					menu_search_next.setDisable(true);
+					menu_search_last.setDisable(true);
+					menu_replace.setDisable(true);
 				} else {
 					menu_search.setDisable(false);
 					menu_cut.setDisable(false);
 					menu_copy.setDisable(false);
 					menu_delete.setDisable(false);
+					menu_search_text.setDisable(false);
+					menu_search_next.setDisable(false);
+					menu_search_last.setDisable(false);
+					menu_replace.setDisable(false);
 				}
 			}
 		});
@@ -234,6 +254,10 @@ public class Controller implements Initializable {
 		menu_copy.setDisable(true);
 		menu_delete.setDisable(true);
 		menu_goto.setDisable(true);
+		menu_search_text.setDisable(true);
+		menu_search_next.setDisable(true);
+		menu_search_last.setDisable(true);
+		menu_replace.setDisable(true);
 		eventRegiste();
 	}
 
@@ -407,10 +431,30 @@ public class Controller implements Initializable {
 		}
 	}
 
+	public void find(ActionEvent event) {
+		
+	}
+
+	public void findLast(ActionEvent event) {
+		
+	}
+
+	public void findNext(ActionEvent event) {
+		
+	}
+
+	public void replace(ActionEvent event) {
+		
+	}
+
+	public void gotoLine(ActionEvent event) {
+		
+	}
+
+
 	public void selectAll(ActionEvent event) {
 		text.selectAll();
 	}
-
 	public void insertDate(ActionEvent event) {
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm yyyy/MM/dd");

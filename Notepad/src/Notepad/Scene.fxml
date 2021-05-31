@@ -134,19 +134,19 @@
                         <KeyCodeCombination alt="UP" code="E" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="查找">
+                  <MenuItem fx:id="menu_search_text" mnemonicParsing="false" onAction="#find" text="查找">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="查找下一个" />
-                  <MenuItem mnemonicParsing="false" text="查找上一个" />
-                  <MenuItem mnemonicParsing="false" text="替换">
+                  <MenuItem fx:id="menu_search_next" mnemonicParsing="false" onAction="#findNext" text="查找下一个" />
+                  <MenuItem fx:id="menu_search_last" mnemonicParsing="false" onAction="#findLast" text="查找上一个" />
+                  <MenuItem fx:id="menu_replace" mnemonicParsing="false" onAction="#replace" text="替换">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="H" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem fx:id="menu_goto" mnemonicParsing="false" text="转到">
+                  <MenuItem fx:id="menu_goto" mnemonicParsing="false" onAction="#gotoLine" text="转到">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="G" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -205,9 +205,9 @@
       </MenuBar>
    </top>
    <bottom>
-      <HBox fx:id="state" prefHeight="25.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
+      <HBox fx:id="state" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
          <children>
-            <Separator orientation="VERTICAL" prefHeight="200.0">
+            <Separator orientation="VERTICAL">
                <HBox.margin>
                   <Insets left="100.0" />
                </HBox.margin>
@@ -217,19 +217,19 @@
                   <Insets left="15.0" right="15.0" top="5.0" />
                </HBox.margin>
             </Label>
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Separator orientation="VERTICAL" />
             <Label fx:id="zoom" text="100%">
                <HBox.margin>
                   <Insets left="15.0" right="15.0" top="5.0" />
                </HBox.margin>
             </Label>
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Separator orientation="VERTICAL" />
             <Label text="Windows(CRLF)">
                <HBox.margin>
                   <Insets left="15.0" right="15.0" top="5.0" />
                </HBox.margin>
             </Label>
-            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Separator orientation="VERTICAL" />
             <Label text="UTF-8">
                <HBox.margin>
                   <Insets left="15.0" right="15.0" top="5.0" />
