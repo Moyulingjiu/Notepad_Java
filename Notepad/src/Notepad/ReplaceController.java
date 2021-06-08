@@ -92,8 +92,13 @@ public class ReplaceController implements Initializable {
 			find = TextFind.getText();
 		}
 		
-		if (sel.equals(find))
+		if (sel.equals(find)) {
+			int tmp = pos;
 			controller.selectTextReplace(TextReplace.getText());
+			pos = tmp + TextReplace.getText().length();
+		}
+		
+		
 		int p = findNext();
 		if (p != -1)
 			controller.selectText(p, getTextLength());
@@ -101,14 +106,21 @@ public class ReplaceController implements Initializable {
 	}
 
 	public void _replaceAll(ActionEvent event) {
+		pos = 0;
 		int p = findNext();
-		if (p != -1)
+		if (p != -1) {
+			int tmp = pos;
 			controller.selectText(p, getTextLength());
+			pos = tmp + TextReplace.getText().length();
+		}
 		while (p != -1) {
 			controller.selectTextReplace(TextReplace.getText());
 			p = findNext();
-			if (p != -1)
+			if (p != -1) {
+				int tmp = pos;
 				controller.selectText(p, getTextLength());
+				pos = tmp + TextReplace.getText().length();
+			}
 		}
 		controller.refreshLine();
 	}
