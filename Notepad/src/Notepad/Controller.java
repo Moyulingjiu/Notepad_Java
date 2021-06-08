@@ -27,10 +27,15 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.fxml.JavaFXBuilderFactory;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
@@ -41,12 +46,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 
 public class Controller implements Initializable {
@@ -59,10 +67,13 @@ public class Controller implements Initializable {
 	@FXML
 	private HBox state;
 	@FXML
-	private Label pos;
+	private Label position;
 	@FXML
 	private Label zoom;
 
+	@FXML
+	private MenuItem menu_newWindow;
+	
 	// =================================
 	// 编辑
 	@FXML
@@ -75,7 +86,6 @@ public class Controller implements Initializable {
 	private MenuItem menu_paste;
 	@FXML
 	private MenuItem menu_delete;
-	
 
 	@FXML
 	private MenuItem menu_search_text;
@@ -92,6 +102,28 @@ public class Controller implements Initializable {
 	@FXML
 	private MenuItem menu_search;
 
+	
+
+	@FXML
+	private MenuItem menu_revoke2;
+	@FXML
+	private MenuItem menu_cut2;
+	@FXML
+	private MenuItem menu_copy2;
+	@FXML
+	private MenuItem menu_paste2;
+	@FXML
+	private MenuItem menu_delete2;
+	@FXML
+	private MenuItem menu_search2;
+	@FXML
+	private MenuItem menu_formRight;
+	@FXML
+	private MenuItem menu_showUnicode;
+	@FXML
+	private MenuItem menu_closeInput;
+	@FXML
+	private MenuItem menu_Rechoose;
 	// =================================
 	// 格式
 	@FXML
@@ -110,11 +142,46 @@ public class Controller implements Initializable {
 	private String title = "无标题 - 记事本";
 	private int fontSize = 14;
 	private int nowFontSize = 14;
-	public String findString = "";  // 查找的字符串
+	public String findString = ""; // 查找的字符串
 	public String replaceString = ""; // 要替换的字符串
+	
+	Stage secondStage;
+	private boolean findDialog; // 查找对话框有没有打开
+	private FindController findController;
+	private boolean replaceDialog; // 替换对话框有没有打开
+	private ReplaceController replaceController;
+	
+	private boolean insertDate = false;
 
-	private void recordText() {
-		last = text.getText();
+	public void secondStageExit() {
+		if (findDialog || replaceDialog) {
+			secondStage.close();
+			findDialog = false;
+			replaceDialog = false;
+		}
+	}
+	
+	public void selectText(int startIndex, int length) {
+		int len = text.getText().length();
+		if (startIndex > len)
+			return;
+		else if (startIndex + length > len)
+			length = len - startIndex;
+		text.selectRange(startIndex, startIndex + length);
+	}
+	
+	public void selectTextReplace(String str) {
+		text.replaceSelection(str);
+		if (findDialog) {
+			findController.setText(text.getText(), text.getCaretPosition());
+		}
+		if (replaceDialog) {
+			replaceController.setText(text.getText(), text.getCaretPosition());
+		}
+	}
+	
+	public String getSelected() {
+		return text.getSelectedText();
 	}
 
 	private void setTitle() {
@@ -194,13 +261,87 @@ public class Controller implements Initializable {
 		}
 		setTitle();
 	}
-
+	
+	public void refreshLine() {
+		if (findDialog) {
+			findController.setText(text.getText(), text.getCaretPosition());
+		}
+		if (replaceDialog) {
+			replaceController.setText(text.getText(), text.getCaretPosition());
+		}
+		String str = text.getText();
+		int pos = text.getCaretPosition(); 
+		int len = str.length();
+		
+		int i = 0;
+		int nowLine = 1;
+		int index = 0;
+		while (i <= pos && i < len) {
+			if (str.charAt(i) == '\n') {
+				if (i != pos) {
+					nowLine++;
+					index = i;
+				}
+			}
+			i++;
+		}
+		int column = i - index;
+//		if (nowLine == 1)
+//			column++;
+		position.setText("第 " + nowLine + " 行，第 " + column + " 列");
+		
+	}
+	
 	private void eventRegiste() {
 		// 输入监听
 		text.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 //		        System.out.println("observable = " + observable + ", oldValue = " + oldValue + ", newValue = " + newValue);
+		        if (!insertDate) {
+					if (!last.equals(newValue)) {
+						int len1 = last.length();
+						int len2 = newValue.length();
+						if (Math.abs(len1 - len2) >= 5) {
+							last = newValue;
+						} else {
+							int len = Math.min(len1, len2);
+							if (len > 5) {
+								int number = 0;
+								for (int i = 0; i < len; i++) {
+									if (last.charAt(i) != newValue.charAt(i)) {
+										number++;
+										if (number > 5)
+											break;
+									}
+								}
+								if (number > 5)
+									last = newValue;
+							} else {
+								last = newValue;
+							}
+						}
+					}
+		        } else {
+		        	insertDate = false;
+		        }
+				
+				if (findDialog) {
+					findController.setText(text.getText(), text.getCaretPosition());
+				}
+				
+				if (newValue.length() == 0) {
+					menu_search_text.setDisable(true);
+					menu_search_next.setDisable(true);
+					menu_search_last.setDisable(true);
+					menu_replace.setDisable(true);
+				} else {
+					menu_search_text.setDisable(false);
+					menu_search_next.setDisable(false);
+					menu_search_last.setDisable(false);
+					menu_replace.setDisable(false);
+				}
+				
 				if (initText.equals(text.getText())) {
 					if (title.substring(0, 1).equals("*")) {
 						title = title.substring(1);
@@ -214,7 +355,7 @@ public class Controller implements Initializable {
 					}
 					stage.setTitle(title);
 				}
-				// recordText();
+				refreshLine();
 			}
 		});
 		// 选中监听
@@ -228,26 +369,46 @@ public class Controller implements Initializable {
 					menu_cut.setDisable(true);
 					menu_copy.setDisable(true);
 					menu_delete.setDisable(true);
-					menu_search_text.setDisable(true);
-					menu_search_next.setDisable(true);
-					menu_search_last.setDisable(true);
-					menu_replace.setDisable(true);
+					menu_search2.setDisable(true);
+					menu_cut2.setDisable(true);
+					menu_copy2.setDisable(true);
+					menu_delete2.setDisable(true);
 				} else {
 					menu_search.setDisable(false);
 					menu_cut.setDisable(false);
 					menu_copy.setDisable(false);
 					menu_delete.setDisable(false);
-					menu_search_text.setDisable(false);
-					menu_search_next.setDisable(false);
-					menu_search_last.setDisable(false);
-					menu_replace.setDisable(false);
+					menu_search2.setDisable(false);
+					menu_cut2.setDisable(false);
+					menu_copy2.setDisable(false);
+					menu_delete2.setDisable(false);
 				}
+				refreshLine();
 			}
 		});
 	}
 
+	public void click(MouseEvent event) {
+		refreshLine();
+	}
+
+	public void keydown(KeyEvent event) {
+		refreshLine();
+	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		menu_search2.setDisable(true);
+		menu_cut2.setDisable(true);
+		menu_copy2.setDisable(true);
+		menu_delete2.setDisable(true);
+		menu_formRight.setDisable(true);
+		menu_showUnicode.setDisable(true);
+		menu_closeInput.setDisable(true);
+		menu_Rechoose.setDisable(true);
+		
+		//menu_newWindow.setDisable(true);
+		
 		menu_search.setDisable(true);
 		menu_revoke.setDisable(true);
 		menu_cut.setDisable(true);
@@ -259,6 +420,9 @@ public class Controller implements Initializable {
 		menu_search_last.setDisable(true);
 		menu_replace.setDisable(true);
 		eventRegiste();
+		secondStage = new Stage();
+		findDialog = false;
+		replaceDialog = false;
 	}
 
 	// ==============================================
@@ -363,20 +527,25 @@ public class Controller implements Initializable {
 	// ==============================================
 	// 编辑菜单栏
 	public void revoke(ActionEvent event) {
+		insertDate = true;
 		String tmp = last;
-		recordText();
+		last = text.getText();
 		text.setText(tmp);
 		text.selectAll();
 	}
 
 	public void cut(ActionEvent event) {
+		String tmp = text.getText();
+		if (!tmp.equals(last))
+			last = tmp;
+		insertDate = true;
 		String select = text.getSelectedText();
-		recordText();
 		text.replaceSelection("");
 		Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 		Transferable tText = new StringSelection(select);
 		clip.setContents(tText, null);
-		System.out.println("已将内容复制到粘贴板 - " + select);
+		//System.out.println("已将内容复制到粘贴板 - " + select);
+		refreshLine();
 	}
 
 	public void copy(ActionEvent event) {
@@ -384,7 +553,8 @@ public class Controller implements Initializable {
 		Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 		Transferable tText = new StringSelection(select);
 		clip.setContents(tText, null);
-		System.out.println("已将内容复制到粘贴板 - " + select);
+		//System.out.println("已将内容复制到粘贴板 - " + select);
+		refreshLine();
 	}
 
 	public void paste(ActionEvent event) {
@@ -395,10 +565,15 @@ public class Controller implements Initializable {
 			// 检查内容是否是文本类型
 			if (clipT.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				try {
+					String tmp = text.getText();
+					if (!tmp.equals(last))
+						last = tmp;
+					insertDate = true;
+					
 					String context = (String) clipT.getTransferData(DataFlavor.stringFlavor);
-					recordText();
 					text.insertText(text.getCaretPosition(), context);
-					System.out.println("已将内容粘贴到文本 - " + context);
+					refreshLine();
+					//System.out.println("已将内容粘贴到文本 - " + context);
 				} catch (UnsupportedFlavorException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -409,8 +584,12 @@ public class Controller implements Initializable {
 	}
 
 	public void delete(ActionEvent event) {
-		recordText();
+		insertDate = true;
+		String tmp = text.getText();
+		if (!tmp.equals(last))
+			last = tmp;
 		text.replaceSelection("");
+		refreshLine();
 	}
 
 	public void bingSearch(ActionEvent event) {
@@ -432,33 +611,127 @@ public class Controller implements Initializable {
 	}
 
 	public void find(ActionEvent event) {
-		
+		if (!findDialog) {
+			secondStageExit();
+			findDialog = true;
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(getClass().getResource("Find.fxml"));
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+
+			try {
+				Parent root = fxmlLoader.load();
+				findController = fxmlLoader.getController();
+				findController.setController(this);
+				findController.setText(text.getText(), text.getCaretPosition());
+				findController.setTextFind(text.getSelectedText());
+
+				secondStage.setScene(new Scene(root));
+				secondStage.setTitle("查找");
+				secondStage.show();
+				secondStage.setResizable(false);
+				Controller.stage = secondStage;
+				// 关闭监听
+				secondStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent event) {
+						System.out.print("关闭事件");
+						findDialog = false;
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void findLast(ActionEvent event) {
-		
+		if (findDialog) {
+			int p = findController.findLast();
+			if (p != -1)
+				selectText(p, findController.getTextLength());
+		}
 	}
 
 	public void findNext(ActionEvent event) {
-		
+		if (findDialog) {
+			int p = findController.findNext();
+			if (p != -1)
+				selectText(p, findController.getTextLength());
+		}
 	}
 
 	public void replace(ActionEvent event) {
-		
+		if (!replaceDialog) {
+			secondStageExit();
+			replaceDialog = true;
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(getClass().getResource("Replace.fxml"));
+			fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
+
+			try {
+				Parent root = fxmlLoader.load();
+				replaceController = fxmlLoader.getController();
+				replaceController.setController(this);
+				replaceController.setText(text.getText(), text.getCaretPosition());
+				replaceController.setTextFind(text.getSelectedText());
+
+				secondStage.setScene(new Scene(root));
+				secondStage.setTitle("替换");
+				secondStage.show();
+				secondStage.setResizable(false);
+				Controller.stage = secondStage;
+				// 关闭监听
+				secondStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					@Override
+					public void handle(WindowEvent event) {
+						replaceDialog = false;
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void gotoLine(ActionEvent event) {
-		
+		GotoDialog dialog = new GotoDialog();
+		Optional<Integer> result = dialog.showAndWait();
+		result.ifPresent(f -> {
+			System.out.println("转到行：" + f);
+			String str = text.getText();
+			int len = str.length();
+			int i = 0;
+			int pos = -1;
+			int nowLine = 1;
+			while (i < len) {
+				if (nowLine == f) {
+					pos = i;
+					break;
+				}
+				if (str.charAt(i) == '\n')
+					nowLine++;
+				i++;
+			}
+			if (pos == -1) {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("记事本");
+				alert.setHeaderText("不存在该行");
+				alert.showAndWait();
+			} else {
+				text.positionCaret(pos);
+			}
+			
+		});
 	}
-
 
 	public void selectAll(ActionEvent event) {
 		text.selectAll();
 	}
+
 	public void insertDate(ActionEvent event) {
+		insertDate = true;
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm yyyy/MM/dd");
-		recordText();
 		text.insertText(text.getCaretPosition(), formatter.format(date));
 	}
 

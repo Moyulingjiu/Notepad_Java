@@ -13,22 +13,22 @@
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notepad.Controller">
    <center>
-      <TextArea fx:id="text" style="-fx-background-color: #fff;" wrapText="true" BorderPane.alignment="CENTER">
+      <TextArea fx:id="text" onKeyPressed="#keydown" onMouseClicked="#click" style="-fx-background-color: #fff;" wrapText="true" BorderPane.alignment="CENTER">
          <contextMenu>
             <ContextMenu>
               <items>
-                <MenuItem mnemonicParsing="false" text="撤销">
+                <MenuItem fx:id="menu_revoke2" mnemonicParsing="false" onAction="#revoke" text="撤销">
                      <graphic>
                         <Label text="    " />
                      </graphic></MenuItem>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="剪切" />
-                  <MenuItem mnemonicParsing="false" text="复制" />
-                  <MenuItem mnemonicParsing="false" text="粘贴" />
-                  <MenuItem mnemonicParsing="false" text="删除" />
+                  <MenuItem fx:id="menu_cut2" mnemonicParsing="false" onAction="#cut" text="剪切" />
+                  <MenuItem fx:id="menu_copy2" mnemonicParsing="false" onAction="#copy" text="复制" />
+                  <MenuItem fx:id="menu_paste2" mnemonicParsing="false" onAction="#paste" text="粘贴" />
+                  <MenuItem fx:id="menu_delete2" mnemonicParsing="false" onAction="#delete" text="删除" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="从右到左的阅读顺序" />
-                  <MenuItem mnemonicParsing="false" text="显示 Unicode 控制字符" />
+                  <MenuItem fx:id="menu_formRight" mnemonicParsing="false" text="从右到左的阅读顺序" />
+                  <MenuItem fx:id="menu_showUnicode" mnemonicParsing="false" text="显示 Unicode 控制字符" />
                   <Menu mnemonicParsing="false" text="插入 Unicode 控制字符">
                     <items>
                       <MenuItem mnemonicParsing="false" text="LRM">
@@ -54,10 +54,10 @@
                     </items>
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="关闭输入法" />
-                  <MenuItem mnemonicParsing="false" text="汉字重选" />
+                  <MenuItem fx:id="menu_closeInput" mnemonicParsing="false" text="关闭输入法" />
+                  <MenuItem fx:id="menu_Rechoose" mnemonicParsing="false" text="汉字重选" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="使用 Bing 搜索..." />
+                  <MenuItem fx:id="menu_search2" mnemonicParsing="false" onAction="#bingSearch" text="使用 Bing 搜索..." />
               </items>
             </ContextMenu>
          </contextMenu>
@@ -78,7 +78,7 @@
                         <Label text="    " />
                      </graphic>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="新窗口" />
+                  <MenuItem fx:id="menu_newWindow" mnemonicParsing="false" text="新窗口" />
                   <MenuItem mnemonicParsing="false" onAction="#openFile" text="打开">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
@@ -212,7 +212,7 @@
                   <Insets left="100.0" />
                </HBox.margin>
             </Separator>
-            <Label fx:id="pos" text="第1行，第1列">
+            <Label fx:id="position" text="第 1 行，第 1 列">
                <HBox.margin>
                   <Insets left="15.0" right="15.0" top="5.0" />
                </HBox.margin>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="201.0" prefWidth="443.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notepad.ReplaceController">
+   <children>
+      <Label layoutX="14.0" layoutY="17.0" text="查找内容：">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <TextField fx:id="TextFind" layoutX="84.0" layoutY="12.0" prefHeight="23.0" prefWidth="236.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="Case" layoutX="14.0" layoutY="131.0" mnemonicParsing="false" text="区分大小写">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="LoopFind" layoutX="14.0" layoutY="168.0" mnemonicParsing="false" text="循环">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
+      <VBox layoutX="339.0" layoutY="12.0" prefHeight="160.0" prefWidth="90.0" spacing="10.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#_findNext" text="查找下一个">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#_replace" prefHeight="29.0" prefWidth="90.0" text="替换">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#_replaceAll" prefHeight="29.0" prefWidth="90.0" text="全部替换">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#_close" prefHeight="29.0" prefWidth="90.0" text="取消">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <TextField fx:id="TextReplace" layoutX="84.0" layoutY="49.0" prefHeight="23.0" prefWidth="236.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="14.0" layoutY="54.0" text="替换为：">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

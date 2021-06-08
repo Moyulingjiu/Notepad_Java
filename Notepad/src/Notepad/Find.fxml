@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="201.0" prefWidth="443.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Notepad.FindController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="64.0" layoutX="183.0" layoutY="69.0" stroke="#00000083" strokeType="INSIDE" width="143.0" />
+      <Label layoutX="14.0" layoutY="17.0" text="查找内容：">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <TextField fx:id="TextFind" layoutX="84.0" layoutY="12.0" prefHeight="23.0" prefWidth="236.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="Case" layoutX="14.0" layoutY="131.0" mnemonicParsing="false" text="区分大小写">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="LoopFind" layoutX="14.0" layoutY="168.0" mnemonicParsing="false" text="循环">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </CheckBox>
+      <Button layoutX="339.0" layoutY="12.0" mnemonicParsing="false" onAction="#_findNext" text="查找下一个">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="339.0" layoutY="52.0" mnemonicParsing="false" onAction="#_close" prefHeight="29.0" prefWidth="90.0" text="取消">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <RadioButton fx:id="Up" layoutX="213.0" layoutY="106.0" mnemonicParsing="false" text="向上" />
+      <RadioButton fx:id="Down" layoutX="268.0" layoutY="106.0" mnemonicParsing="false" text="向下" />
+      <Label layoutX="195.0" layoutY="79.0" text="方向">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

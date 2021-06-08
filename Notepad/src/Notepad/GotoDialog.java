@@ -11,14 +11,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ButtonBar.ButtonData;
 
-public class GotoDialog extends Dialog<String>{
+public class GotoDialog extends Dialog<Integer>{
 	GotoController c;
 	
 	public GotoDialog(){
-	    setTitle("选择字体"); 
+	    setTitle("转到指定行"); 
 	    
 	    FXMLLoader fxmlLoader = new FXMLLoader();
-	    fxmlLoader.setLocation(getClass().getResource("Font.fxml"));
+	    fxmlLoader.setLocation(getClass().getResource("Goto.fxml"));
 	    fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory()); 
 	    
 	    try {
@@ -35,7 +35,7 @@ public class GotoDialog extends Dialog<String>{
 	    
 	    setResultConverter(dialogButton -> {
 	        if (dialogButton == loginButtonType1) {
-	            return String.valueOf(c.getLine());
+	            return c.getLine();
 	        }
 	        return null;
 	    }); 

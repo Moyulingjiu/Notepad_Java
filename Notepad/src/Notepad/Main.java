@@ -34,6 +34,8 @@ public class Main extends Application {
 					System.out.print("¹Ø±ÕÊÂ¼þ");
 					if (!c.saveCheck()) {
 						event.consume();
+					} else {
+						c.secondStageExit();
 					}
 				}
 			});
